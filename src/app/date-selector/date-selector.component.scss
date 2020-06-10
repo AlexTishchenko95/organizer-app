@@ -1,0 +1,15 @@
+div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    text-align: center;
+    margin: 3rem 2rem;
+    width: 300px;
+  }
+
+  p {
+    cursor: pointer;
+  }
+}
