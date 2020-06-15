@@ -9,7 +9,7 @@ import { DateService } from '../share/date.service';
 export class DateSelectorComponent {
   constructor(public dateService: DateService) {}
 
-  onGo(value: number) {
+  redirectHandler(value: number): void {
     this.dateService.changeMonth(value);
   }
 

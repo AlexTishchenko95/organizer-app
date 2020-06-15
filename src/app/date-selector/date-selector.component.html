@@ -1,5 +1,5 @@
 <div>
-  <p class="material-icons" (click)="onGo(-1)">keyboard_arrow_left</p>
+  <p class="material-icons" (click)="redirectHandler(-1)">keyboard_arrow_left</p>
   <span>{{ dateService.date | async | moment}}</span>
-  <p class="material-icons" (click)="onGo(1)">keyboard_arrow_right</p>
+  <p class="material-icons" (click)="redirectHandler(1)">keyboard_arrow_right</p>
 </div>

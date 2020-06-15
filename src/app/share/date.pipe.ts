@@ -8,6 +8,7 @@ import * as moment from 'moment';
 
 export class DatePipe implements PipeTransform {
   transform(m: moment.Moment, format: string = 'MMMM Do YYYY'): any {
-    return m.format(format);
+    if (!m && !format) { return; }
+      return m.format(format);
   }
 }

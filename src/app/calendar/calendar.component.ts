@@ -1,26 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {DateService} from '../share/date.service';
-
-interface Day {
-  value: moment.Moment;
-  active: boolean;
-  disabled: boolean;
-  selected: boolean;
-}
-
-interface Week {
-  days: Day[];
-}
+import {Week} from '../share/calendar.interface';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
   calendar: Week[];
+  destroy$: Subject<void> = new Subject<void>();
 
   constructor(private dateService: DateService) {}
 
@@ -29,7 +22,9 @@ export class CalendarComponent implements OnInit {
   }
 
   initCalendarTable() {
-    this.dateService.date.subscribe((dataValue: moment.Moment) => {
+    this.dateService.date
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((dataValue: moment.Moment) => {
       const firstDay = dataValue.clone().startOf('month').startOf('week');
       const lastDay = dataValue.clone().endOf('month').endOf('week');
       const date = firstDay.clone().subtract(1, 'day');
@@ -53,8 +48,12 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  changeSelectedDate(day: moment.Moment) {
+  changeSelectedDate(day: moment.Moment): void {
     this.dateService.changeDay(day);
   }
 
+  ngOnDestroy() {
+    this.destroy$.next(null);
+    this.destroy$.complete();
+  }
 }
